@@ -1,0 +1,106 @@
+@import "tailwindcss";
+
+:root {
+  --background: #0d0d0d;
+  --foreground: #f7f1e8;
+  --muted: #b8b0a2;
+  --champagne: #d6b56d;
+  --silver: #c8ccd2;
+  --ink: #111111;
+  --paper: #f4efe5;
+  --jade: #6da18a;
+  --oxblood: #7e3037;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-serif: var(--font-playfair);
+  --font-mono: var(--font-geist-mono);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--background);
+  color: var(--foreground);
+  scroll-behavior: auto;
+}
+
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+  background:
+    linear-gradient(180deg, rgba(13, 13, 13, 0.94), rgba(13, 13, 13, 1) 42%),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.72' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='.18'/%3E%3C/svg%3E");
+  font-family: var(--font-geist-sans), Inter, system-ui, sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+::selection {
+  background: rgba(214, 181, 109, 0.35);
+  color: #fff8ea;
+}
+
+.editorial {
+  font-family: var(--font-playfair), Georgia, serif;
+}
+
+.noise-panel {
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02)),
+    rgba(18, 18, 18, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.34);
+  backdrop-filter: blur(20px);
+}
+
+.hairline {
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+.watch-shadow {
+  filter: drop-shadow(0 32px 60px rgba(0, 0, 0, 0.46));
+}
+
+.snap-x-soft {
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.snap-x-soft::-webkit-scrollbar {
+  display: none;
+}
+
+.progress-bar {
+  transform-origin: left center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

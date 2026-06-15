@@ -1,0 +1,190 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id            String        @id @default(cuid())
+  clerkId       String?       @unique
+  email         String        @unique
+  name          String?
+  role          Role          @default(MEMBER)
+  profile       Profile?
+  consultations Consultation[]
+  collection    CollectionItem[]
+  comments      Comment[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+model Profile {
+  id        String  @id @default(cuid())
+  userId    String  @unique
+  user      User    @relation(fields: [userId], references: [id])
+  wristSize Decimal?
+  city      String?
+  style     String?
+  bio       String?
+}
+
+model Watch {
+  id              String           @id @default(cuid())
+  slug            String           @unique
+  name            String
+  brandId         String
+  brand           Brand            @relation(fields: [brandId], references: [id])
+  priceInr        Int
+  style           WatchStyle
+  movement        MovementType
+  strap           StrapType
+  caseSizeMm      Decimal
+  crystal         String
+  waterResistance String
+  valueScore      Int
+  designScore     Int
+  affiliateLinks  AffiliateLink[]
+  collectionItems CollectionItem[]
+  comparisonsA    Comparison[]     @relation("CompareA")
+  comparisonsB    Comparison[]     @relation("CompareB")
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+}
+
+model Brand {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  name      String
+  country   String?
+  history   String?
+  watches   Watch[]
+  createdAt DateTime @default(now())
+}
+
+model Article {
+  id          String     @id @default(cuid())
+  slug        String     @unique
+  title       String
+  excerpt     String
+  body        String
+  category    Category
+  status      PostStatus @default(DRAFT)
+  authorId    String?
+  publishedAt DateTime?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model Consultation {
+  id          String             @id @default(cuid())
+  userId      String?
+  user        User?              @relation(fields: [userId], references: [id])
+  name        String
+  email       String
+  budget      String
+  wristSize   String?
+  notes       String?
+  status      ConsultationStatus @default(LEAD)
+  paymentId   String?
+  calendlyUrl String?
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+}
+
+model AffiliateLink {
+  id        String   @id @default(cuid())
+  watchId   String
+  watch     Watch    @relation(fields: [watchId], references: [id])
+  retailer  String
+  url       String
+  network   String
+  clicks    Int      @default(0)
+  createdAt DateTime @default(now())
+}
+
+model CollectionItem {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  watchId   String
+  watch     Watch    @relation(fields: [watchId], references: [id])
+  status    String   @default("wishlist")
+  createdAt DateTime @default(now())
+}
+
+model Comparison {
+  id        String @id @default(cuid())
+  watchAId  String
+  watchBId  String
+  watchA    Watch  @relation("CompareA", fields: [watchAId], references: [id])
+  watchB    Watch  @relation("CompareB", fields: [watchBId], references: [id])
+  slug      String @unique
+  seoTitle  String
+  summary   String
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  body      String
+  targetId  String
+  target    String
+  createdAt DateTime @default(now())
+}
+
+enum Role {
+  MEMBER
+  EDITOR
+  ADMIN
+}
+
+enum WatchStyle {
+  DRESS
+  DIVE
+  FIELD
+  EVERYDAY
+  CHRONOGRAPH
+  INTEGRATED
+}
+
+enum MovementType {
+  AUTOMATIC
+  QUARTZ
+  SOLAR
+  SPRING_DRIVE
+}
+
+enum StrapType {
+  BRACELET
+  LEATHER
+  RUBBER
+  NATO
+}
+
+enum Category {
+  BUYING_GUIDES
+  BRAND_HISTORY
+  WATCH_EDUCATION
+  AFFORDABLE_WATCHES
+  LUXURY_WATCHES
+  AUTOMATIC_WATCH_GUIDES
+  MAINTENANCE
+  STRAP_GUIDES
+}
+
+enum PostStatus {
+  DRAFT
+  REVIEW
+  PUBLISHED
+}
+
+enum ConsultationStatus {
+  LEAD
+  PAID
+  SCHEDULED
+  DELIVERED
+  ARCHIVED
+}
