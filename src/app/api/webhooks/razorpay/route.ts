@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { verifyRazorpayWebhookSignature } from "@/lib/razorpay";
 import { prisma } from "@/lib/prisma";
+import { sendPaymentCapturedEmails } from "@/lib/email";
 
 type RazorpayWebhookPayload = {
   event?: string;
@@ -78,6 +79,17 @@ export async function POST(request: Request) {
         status: "PAID",
         paymentId: paymentEntity.id,
       },
+    });
+  }
+
+  if (status === "CAPTURED") {
+    await sendPaymentCapturedEmails({
+      name: payment.customerName,
+      email: payment.customerEmail,
+      planLabel: payment.planLabel,
+      amount: payment.amount,
+      paymentId: paymentEntity.id,
+      consultationId: payment.consultationId,
     });
   }
 

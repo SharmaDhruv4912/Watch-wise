@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { sendConsultationLeadEmails } from "@/lib/email";
 
 const consultationSchema = z.object({
   name: z.string().min(2),
@@ -26,6 +27,14 @@ export async function POST(request: Request) {
       notes: parsed.data.notes,
       wristSize: parsed.data.wristSize,
     },
+  });
+
+  await sendConsultationLeadEmails({
+    name: consultation.name,
+    email: consultation.email,
+    budget: consultation.budget,
+    notes: consultation.notes,
+    consultationId: consultation.id,
   });
 
   return NextResponse.json({

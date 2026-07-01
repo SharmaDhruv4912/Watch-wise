@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { verifyRazorpaySignature } from "@/lib/razorpay";
 import { prisma } from "@/lib/prisma";
+import { sendPaymentCapturedEmails } from "@/lib/email";
 
 const verifySchema = z.object({
   razorpay_order_id: z.string().min(1),
@@ -44,6 +45,15 @@ export async function POST(request: Request) {
       },
     });
   }
+
+  await sendPaymentCapturedEmails({
+    name: payment.customerName,
+    email: payment.customerEmail,
+    planLabel: payment.planLabel,
+    amount: payment.amount,
+    paymentId: parsed.data.razorpay_payment_id,
+    consultationId: payment.consultationId,
+  });
 
   return NextResponse.json({
     verified: true,
