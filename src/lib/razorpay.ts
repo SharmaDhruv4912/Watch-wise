@@ -57,3 +57,21 @@ export function verifyRazorpaySignature({
 
   return crypto.timingSafeEqual(Buffer.from(expected), Buffer.from(signature));
 }
+
+export function verifyRazorpayWebhookSignature({
+  body,
+  signature,
+}: {
+  body: string;
+  signature: string;
+}) {
+  const secret = process.env.RAZORPAY_WEBHOOK_SECRET;
+
+  if (!secret) {
+    throw new Error("Razorpay webhook secret is not configured");
+  }
+
+  const expected = crypto.createHmac("sha256", secret).update(body).digest("hex");
+
+  return crypto.timingSafeEqual(Buffer.from(expected), Buffer.from(signature));
+}

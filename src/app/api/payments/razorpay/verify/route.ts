@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { verifyRazorpaySignature } from "@/lib/razorpay";
+import { prisma } from "@/lib/prisma";
 
 const verifySchema = z.object({
   razorpay_order_id: z.string().min(1),
@@ -25,8 +26,28 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Payment verification failed" }, { status: 400 });
   }
 
+  const payment = await prisma.payment.update({
+    where: { orderId: parsed.data.razorpay_order_id },
+    data: {
+      paymentId: parsed.data.razorpay_payment_id,
+      signature: parsed.data.razorpay_signature,
+      status: "CAPTURED",
+    },
+  });
+
+  if (payment.consultationId) {
+    await prisma.consultation.update({
+      where: { id: payment.consultationId },
+      data: {
+        status: "PAID",
+        paymentId: parsed.data.razorpay_payment_id,
+      },
+    });
+  }
+
   return NextResponse.json({
     verified: true,
     status: "paid",
+    consultationId: payment.consultationId,
   });
 }

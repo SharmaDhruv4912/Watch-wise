@@ -88,9 +88,30 @@ model Consultation {
   notes       String?
   status      ConsultationStatus @default(LEAD)
   paymentId   String?
+  payments    Payment[]
   calendlyUrl String?
   createdAt   DateTime           @default(now())
   updatedAt   DateTime           @updatedAt
+}
+
+model Payment {
+  id             String        @id @default(cuid())
+  consultationId String?
+  consultation   Consultation? @relation(fields: [consultationId], references: [id])
+  provider       String        @default("razorpay")
+  orderId        String        @unique
+  paymentId      String?       @unique
+  signature      String?
+  planId         String
+  planLabel      String
+  amount         Int
+  currency       String        @default("INR")
+  customerName   String
+  customerEmail  String
+  status         PaymentStatus @default(CREATED)
+  rawPayload     Json?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
 }
 
 model AffiliateLink {
@@ -187,4 +208,12 @@ enum ConsultationStatus {
   SCHEDULED
   DELIVERED
   ARCHIVED
+}
+
+enum PaymentStatus {
+  CREATED
+  AUTHORIZED
+  CAPTURED
+  FAILED
+  REFUNDED
 }

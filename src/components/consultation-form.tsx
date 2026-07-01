@@ -41,13 +41,33 @@ export function ConsultationForm() {
     const name = String(form.get("name") ?? "");
     const email = String(form.get("email") ?? "");
     const planId = String(form.get("planId") ?? "essential");
+    const budget = String(form.get("budget") ?? "");
+    const notes = String(form.get("notes") ?? "");
 
     try {
+      const consultationResponse = await fetch("/api/consultations", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          name,
+          email,
+          budget,
+          notes,
+        }),
+      });
+
+      if (!consultationResponse.ok) {
+        throw new Error("Could not save consultation request");
+      }
+
+      const consultation = await consultationResponse.json();
+
       const orderResponse = await fetch("/api/payments/razorpay/order", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
           planId,
+          consultationId: consultation.id,
           customer: { name, email },
         }),
       });
