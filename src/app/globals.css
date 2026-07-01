@@ -5,6 +5,9 @@
   --foreground: #f7f1e8;
   --muted: #b8b0a2;
   --champagne: #d6b56d;
+  --blush: #d7aaa4;
+  --sage: #9eb7a6;
+  --porcelain: #f3eee6;
   --silver: #c8ccd2;
   --ink: #111111;
   --paper: #f4efe5;
@@ -34,7 +37,9 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
   background:
-    linear-gradient(180deg, rgba(13, 13, 13, 0.94), rgba(13, 13, 13, 1) 42%),
+    linear-gradient(135deg, rgba(215, 170, 164, 0.08), transparent 30%),
+    linear-gradient(225deg, rgba(158, 183, 166, 0.09), transparent 34%),
+    linear-gradient(180deg, rgba(13, 13, 13, 0.96), rgba(13, 13, 13, 1) 45%),
     url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.72' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='.18'/%3E%3C/svg%3E");
   font-family: var(--font-geist-sans), Inter, system-ui, sans-serif;
 }
@@ -62,11 +67,27 @@ textarea {
 
 .noise-panel {
   background:
-    linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02)),
-    rgba(18, 18, 18, 0.82);
-  border: 1px solid rgba(255, 255, 255, 0.11);
+    linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(215, 170, 164, 0.035) 42%, rgba(158, 183, 166, 0.04)),
+    rgba(19, 18, 17, 0.82);
+  border: 1px solid rgba(244, 239, 229, 0.13);
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.34);
   backdrop-filter: blur(20px);
+}
+
+.pastel-panel {
+  background:
+    linear-gradient(135deg, rgba(244, 239, 229, 0.94), rgba(231, 218, 204, 0.9)),
+    #f4efe5;
+  color: #151311;
+  border: 1px solid rgba(17, 17, 17, 0.08);
+  box-shadow: 0 20px 70px rgba(0, 0, 0, 0.18);
+}
+
+.quiet-band {
+  background:
+    linear-gradient(90deg, rgba(215, 170, 164, 0.11), rgba(214, 181, 109, 0.08), rgba(158, 183, 166, 0.11)),
+    rgba(255, 255, 255, 0.025);
+  border-block: 1px solid rgba(255, 255, 255, 0.09);
 }
 
 .hairline {

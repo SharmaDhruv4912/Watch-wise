@@ -34,8 +34,8 @@ export function MagneticButton({ href, children, variant = "solid" }: Props) {
         href={href}
         className={
           variant === "solid"
-            ? "group inline-flex min-h-12 items-center gap-3 rounded-full bg-[#f2dfb2] px-5 text-sm font-medium text-[#111111] transition hover:bg-white"
-            : "group inline-flex min-h-12 items-center gap-3 rounded-full border border-white/15 px-5 text-sm font-medium text-[#f7f1e8] transition hover:border-[#d6b56d]/60 hover:text-white"
+            ? "group inline-flex min-h-12 items-center gap-3 rounded-full bg-[#ead7b0] px-5 text-sm font-medium text-[#111111] shadow-[0_12px_40px_rgba(214,181,109,.18)] transition hover:bg-[#f4efe5]"
+            : "group inline-flex min-h-12 items-center gap-3 rounded-full border border-white/15 bg-white/[0.03] px-5 text-sm font-medium text-[#f7f1e8] transition hover:border-[#d7aaa4]/60 hover:text-white"
         }
       >
         <span>{children}</span>

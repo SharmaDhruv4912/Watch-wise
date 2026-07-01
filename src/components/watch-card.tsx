@@ -5,7 +5,7 @@ import { WatchVisual } from "@/components/watch-visual";
 
 export function WatchCard({ watch, index = 0 }: { watch: Watch; index?: number }) {
   return (
-    <article className="noise-panel group grid min-h-[440px] overflow-hidden rounded-lg p-5">
+    <article className="noise-panel group grid min-h-[440px] overflow-hidden rounded-lg p-5 transition duration-500 hover:-translate-y-1 hover:border-[#d7aaa4]/35">
       <div className="flex items-start justify-between text-xs uppercase text-white/48">
         <span>{watch.brand}</span>
         <span>{watch.movement}</span>
@@ -21,7 +21,7 @@ export function WatchCard({ watch, index = 0 }: { watch: Watch; index?: number }
           </div>
           <Link
             href={watch.affiliateUrl}
-            className="grid h-11 w-11 place-items-center rounded-full border border-white/12 text-white/72 transition group-hover:border-[#d6b56d]/50 group-hover:text-[#d6b56d]"
+            className="grid h-11 w-11 place-items-center rounded-full border border-white/12 text-white/72 transition group-hover:border-[#d7aaa4]/55 group-hover:text-[#ead7b0]"
             aria-label={`Buy ${watch.name}`}
           >
             <ExternalLink className="h-4 w-4" />

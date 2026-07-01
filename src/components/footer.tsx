@@ -1,9 +1,36 @@
 import Link from "next/link";
 
-const groups: Array<[string, string[]]> = [
-  ["Platform", ["Finder", "Consultation", "Guides", "Compare", "Encyclopedia"]],
-  ["India", ["Amazon India", "Ethos", "Helios", "Retailer map", "Authenticity"]],
-  ["Business", ["Affiliate desk", "Sponsored reviews", "Marketplace", "Media kit", "Admin"]],
+const groups: Array<[string, Array<[string, string]>]> = [
+  [
+    "Platform",
+    [
+      ["Finder", "/finder"],
+      ["Consultation", "/consultation"],
+      ["Guides", "/guides"],
+      ["Compare", "/compare"],
+      ["Encyclopedia", "/encyclopedia"],
+    ],
+  ],
+  [
+    "Trust",
+    [
+      ["About", "/about"],
+      ["Contact", "/contact"],
+      ["Refund policy", "/refund"],
+      ["Privacy", "/privacy"],
+      ["Terms", "/terms"],
+    ],
+  ],
+  [
+    "Business",
+    [
+      ["Affiliate disclosure", "/affiliate-disclosure"],
+      ["Sponsored reviews", "/contact"],
+      ["Marketplace", "/community"],
+      ["Media kit", "/contact"],
+      ["Admin", "/admin"],
+    ],
+  ],
 ];
 
 export function Footer() {
@@ -24,10 +51,10 @@ export function Footer() {
             <div key={title}>
               <p className="text-sm text-white">{title}</p>
               <div className="mt-4 grid gap-3 text-sm text-white/52">
-                {(items as string[]).map((item) => (
+                {items.map(([item, href]) => (
                   <Link
                     key={item}
-                    href={item === "Admin" ? "/admin" : "#"}
+                    href={href}
                     className="transition hover:text-white"
                   >
                     {item}

@@ -3,7 +3,21 @@ import { articles } from "@/lib/data";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = "https://watchwise.in";
-  const staticRoutes = ["", "/finder", "/consultation", "/guides", "/compare", "/encyclopedia", "/community"];
+  const staticRoutes = [
+    "",
+    "/finder",
+    "/consultation",
+    "/guides",
+    "/compare",
+    "/encyclopedia",
+    "/community",
+    "/about",
+    "/contact",
+    "/privacy",
+    "/terms",
+    "/refund",
+    "/affiliate-disclosure",
+  ];
 
   return [
     ...staticRoutes.map((route) => ({

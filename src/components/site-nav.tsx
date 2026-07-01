@@ -25,11 +25,11 @@ export function SiteNav() {
       initial={{ y: -28, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      className="fixed left-0 right-0 top-0 z-50 border-b border-white/10 bg-[#0d0d0d]/74 backdrop-blur-2xl"
+      className="fixed left-0 right-0 top-0 z-50 border-b border-white/10 bg-[#0d0d0d]/78 backdrop-blur-2xl"
     >
       <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link href="/" className="group flex items-center gap-3">
-          <span className="grid h-8 w-8 place-items-center rounded-full border border-[#d6b56d]/50 text-xs text-[#d6b56d]">
+          <span className="grid h-8 w-8 place-items-center rounded-full border border-[#d7aaa4]/50 bg-[#d7aaa4]/10 text-xs text-[#ead7b0]">
             W
           </span>
           <span className="editorial text-xl text-[#f7f1e8]">Watchwise</span>
@@ -77,7 +77,7 @@ export function SiteNav() {
           ) : null}
           <Link
             href="/finder"
-            className="hidden h-10 items-center rounded-full bg-[#f2dfb2] px-4 text-sm font-medium text-[#111111] transition hover:bg-white md:inline-flex"
+            className="hidden h-10 items-center rounded-full bg-[#ead7b0] px-4 text-sm font-medium text-[#111111] transition hover:bg-[#f4efe5] md:inline-flex"
           >
             Find a watch
           </Link>

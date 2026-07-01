@@ -4,6 +4,7 @@ import { MagneticButton } from "@/components/magnetic-button";
 import { Reveal } from "@/components/reveal";
 import { WatchCard } from "@/components/watch-card";
 import { WatchVisual } from "@/components/watch-visual";
+import { NewsletterForm } from "@/components/newsletter-form";
 import { articles, watches } from "@/lib/data";
 
 const stats = [
@@ -71,7 +72,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="border-y border-white/10 px-4 py-5 sm:px-6 lg:px-8">
+      <section className="quiet-band px-4 py-5 sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {stats.map(([value, label]) => (
             <Reveal key={label} className="flex items-baseline justify-between border-white/10 py-4 lg:border-r lg:pr-8">
@@ -80,6 +81,20 @@ export default function Home() {
             </Reveal>
           ))}
         </div>
+      </section>
+
+      <section className="mx-auto grid max-w-7xl gap-5 px-4 py-16 sm:px-6 lg:grid-cols-3 lg:px-8">
+        {[
+          ["Pastel restraint", "Blush, sage, porcelain and champagne accents create warmth without losing the dark editorial base."],
+          ["Indian buying context", "Recommendations account for INR pricing, retailer confidence, wrist fit and after-sales reality."],
+          ["Commerce with disclosure", "Consultations, affiliate links and future sponsorships are designed around visible trust signals."],
+        ].map(([title, body]) => (
+          <Reveal key={title} className="pastel-panel rounded-lg p-6">
+            <p className="text-xs uppercase text-[#7e3037]">Watchwise principle</p>
+            <h2 className="editorial mt-6 text-4xl">{title}</h2>
+            <p className="mt-4 text-sm leading-7 text-black/62">{body}</p>
+          </Reveal>
+        ))}
       </section>
 
       <section className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
@@ -156,17 +171,9 @@ export default function Home() {
               honest recommendations before festival-season chaos begins.
             </p>
           </div>
-          <form className="flex min-w-0 max-w-xl flex-col gap-3 self-end sm:min-w-[420px] sm:flex-row">
-            <input
-              type="email"
-              required
-              placeholder="you@example.com"
-              className="h-12 min-w-0 flex-1 rounded-full border border-white/12 bg-white/[0.04] px-5 text-white outline-none focus:border-[#d6b56d]"
-            />
-            <button className="h-12 rounded-full bg-[#f2dfb2] px-6 text-sm font-medium text-[#111111] transition hover:bg-white">
-              Subscribe
-            </button>
-          </form>
+          <div className="self-end">
+            <NewsletterForm />
+          </div>
         </Reveal>
       </section>
     </main>
