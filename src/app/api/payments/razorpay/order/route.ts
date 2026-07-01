@@ -23,8 +23,17 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid checkout request" }, { status: 400 });
   }
 
+  let razorpay;
+  try {
+    razorpay = getRazorpayClient();
+  } catch {
+    return NextResponse.json(
+      { error: "Payments are not configured yet. Contact support to complete booking." },
+      { status: 503 },
+    );
+  }
+
   const plan = consultationPlans[parsed.data.planId as ConsultationPlanId];
-  const razorpay = getRazorpayClient();
 
   const order = await razorpay.orders.create({
     amount: plan.amount,

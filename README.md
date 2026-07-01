@@ -31,12 +31,31 @@ npm run start
 
 ## Database
 
-Create `.env` from `.env.example`, set `DATABASE_URL`, then run:
+Copy `.env.example` to `.env`, set `DATABASE_URL`, then run:
 
 ```bash
 npm run db:generate
-npm run db:migrate -- --name init
+npm run db:migrate
+npm run db:seed
 ```
+
+The seed loads featured watches and affiliate link records for click tracking.
+
+## Launch Checklist
+
+1. **Database** — Neon or Supabase PostgreSQL, run migrations and seed.
+2. **Clerk** — Add publishable/secret keys, webhook at `/api/webhooks/clerk`, set `ADMIN_EMAIL`.
+3. **Razorpay** — Add test/live keys, webhook at `/api/webhooks/razorpay` for `payment.captured`.
+4. **Resend** — Send consultation and newsletter emails from a verified domain.
+5. **Affiliates** — Set `AMAZON_AFFILIATE_TAG` and replace retailer URLs in `src/lib/affiliate.ts` with signed links.
+6. **Calendly** — Set `NEXT_PUBLIC_CALENDLY_URL` for post-payment scheduling.
+7. **Deploy** — Vercel recommended; verify `/api/health` returns `status: ok`.
+
+## Revenue Paths
+
+- **Consultations** — Rs 999 / Rs 2,499 / Rs 4,999 via Razorpay on `/consultation`.
+- **Affiliate clicks** — Tracked in admin dashboard through `/api/affiliate/[watchId]`.
+- **Newsletter** — Lead capture on homepage with admin email alerts.
 
 ## Launch Integrations
 

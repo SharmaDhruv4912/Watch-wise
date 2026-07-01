@@ -28,6 +28,9 @@ const plans = [
   ["collector", "Collector desk", "Rs 4,999"],
 ] as const;
 
+const calendlyUrl =
+  process.env.NEXT_PUBLIC_CALENDLY_URL || "https://calendly.com/your-handle/watch-consultation";
+
 export function ConsultationForm() {
   const [status, setStatus] = useState<string | null>(null);
   const [isPaying, setIsPaying] = useState(false);
@@ -108,7 +111,9 @@ export function ConsultationForm() {
             return;
           }
 
-          setStatus("Payment verified. Your consultation request is ready for scheduling.");
+          setStatus(
+            `Payment verified. Book your call slot: ${calendlyUrl}`,
+          );
         },
         modal: {
           ondismiss: () => {
@@ -178,7 +183,7 @@ export function ConsultationForm() {
         </div>
         <div className="mt-6 grid gap-3 sm:grid-cols-2">
           <a
-            href="https://calendly.com/"
+            href={calendlyUrl}
             target="_blank"
             rel="noreferrer"
             className="inline-flex h-12 items-center justify-center gap-2 rounded-full border border-white/12 text-sm text-white transition hover:border-[#d6b56d]/60"

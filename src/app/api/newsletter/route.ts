@@ -28,6 +28,25 @@ export async function POST(request: Request) {
     `,
   });
 
+  const adminEmail = process.env.ADMIN_EMAIL;
+  if (adminEmail) {
+    await sendEmail({
+      to: adminEmail,
+      replyTo: parsed.data.email,
+      subject: `Newsletter signup: ${parsed.data.email}`,
+      html: `
+        <div style="font-family:Inter,Arial,sans-serif;background:#0d0d0d;color:#f7f1e8;padding:32px">
+          <div style="max-width:560px;margin:0 auto;border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:28px;background:#141414">
+            <p style="color:#d6b56d;text-transform:uppercase;font-size:12px;letter-spacing:.08em">Lead alert</p>
+            <h1 style="font-family:Georgia,serif;font-weight:400;font-size:28px">New newsletter subscriber</h1>
+            <p style="line-height:1.7;color:#d6d0c7"><strong>Email:</strong> ${parsed.data.email}</p>
+            <p style="line-height:1.7;color:#d6d0c7"><strong>Source:</strong> ${parsed.data.source}</p>
+          </div>
+        </div>
+      `,
+    });
+  }
+
   return NextResponse.json({
     subscribed: true,
     segment: "india_watch_letter",

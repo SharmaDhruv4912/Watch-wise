@@ -2,6 +2,7 @@ import { headers } from "next/headers";
 import { Webhook } from "svix";
 import type { WebhookEvent } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
+import { isAdminEmail } from "@/lib/auth";
 
 export async function POST(request: Request) {
   const secret = process.env.CLERK_WEBHOOK_SECRET;
@@ -46,10 +47,12 @@ export async function POST(request: Request) {
           clerkId: event.data.id,
           email,
           name: [event.data.first_name, event.data.last_name].filter(Boolean).join(" ") || null,
+          role: isAdminEmail(email) ? "ADMIN" : "MEMBER",
         },
         update: {
           clerkId: event.data.id,
           name: [event.data.first_name, event.data.last_name].filter(Boolean).join(" ") || null,
+          ...(isAdminEmail(email) ? { role: "ADMIN" } : {}),
         },
       });
     }

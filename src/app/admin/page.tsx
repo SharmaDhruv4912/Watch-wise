@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { auth } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
+import { requireAdmin } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
 export const metadata: Metadata = {
@@ -10,13 +9,9 @@ export const metadata: Metadata = {
 };
 
 export default async function AdminPage() {
-  const { userId } = await auth();
+  await requireAdmin();
 
-  if (!userId) {
-    redirect("/");
-  }
-
-  const [consultations, paymentSummary, userCount] = await Promise.all([
+  const [consultations, paymentSummary, userCount, affiliateSummary] = await Promise.all([
     prisma.consultation.findMany({
       orderBy: { createdAt: "desc" },
       take: 12,
@@ -33,6 +28,10 @@ export default async function AdminPage() {
       _count: { id: true },
     }),
     prisma.user.count(),
+    prisma.affiliateLink.aggregate({
+      _sum: { clicks: true },
+      _count: { id: true },
+    }),
   ]);
 
   const capturedRevenue =
@@ -40,10 +39,12 @@ export default async function AdminPage() {
   const paidConsultations = consultations.filter((item) => item.status === "PAID").length;
   const openConsultations = consultations.filter((item) => item.status === "LEAD").length;
 
+  const affiliateClicks = affiliateSummary._sum.clicks ?? 0;
+
   const metrics = [
     { label: "Captured revenue", value: formatPaise(capturedRevenue), delta: "Razorpay" },
-    { label: "Recent leads", value: String(consultations.length), delta: `${openConsultations} open` },
-    { label: "Paid consults", value: String(paidConsultations), delta: "ready" },
+    { label: "Affiliate clicks", value: String(affiliateClicks), delta: `${affiliateSummary._count.id} links` },
+    { label: "Paid consults", value: String(paidConsultations), delta: `${openConsultations} open leads` },
     { label: "Users", value: String(userCount), delta: "Clerk sync" },
   ];
 
