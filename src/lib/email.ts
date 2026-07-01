@@ -34,13 +34,25 @@ export async function sendEmail({ to, subject, html, replyTo }: SendEmailInput) 
 
   const resend = new Resend(apiKey);
 
-  return resend.emails.send({
-    from,
-    to,
-    subject,
-    html,
-    replyTo,
-  });
+  try {
+    const result = await resend.emails.send({
+      from,
+      to,
+      subject,
+      html,
+      replyTo,
+    });
+
+    if (result.error) {
+      console.error("Resend email failed", result.error);
+      return { skipped: true, reason: "resend_error" };
+    }
+
+    return result;
+  } catch (error) {
+    console.error("Resend email threw", error);
+    return { skipped: true, reason: "resend_exception" };
+  }
 }
 
 export async function sendConsultationLeadEmails(input: ConsultationEmailInput) {
@@ -138,7 +150,7 @@ function baseTemplate({
         <h1 style="margin:0 0 24px;font-family:Georgia,serif;font-weight:400;font-size:34px;line-height:1.05;color:#fff">${escapeHtml(title)}</h1>
         <div style="font-size:15px;line-height:1.7;color:#d6d0c7">${body}</div>
         <div style="margin-top:32px;padding-top:20px;border-top:1px solid rgba(255,255,255,.12);font-size:12px;color:#8f887e">
-          Watchwise India · Editorial watch intelligence for Indian buyers
+          Watchwise India - Editorial watch intelligence for Indian buyers
         </div>
       </div>
     </div>
@@ -161,3 +173,4 @@ function escapeHtml(value: string) {
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
 }
+
